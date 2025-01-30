@@ -1,6 +1,6 @@
 import logo from "../../assets/logo.png"
-import restart from '../../assets/restart.svg'
-import styles from './styles.module.css'
+import restart from "../../assets/restart.svg"
+import styles from "./styles.module.css"
 
 type Props = {
 	current: number
@@ -8,7 +8,7 @@ type Props = {
 	onRestart: () => void
 }
 
-export function Header({current, max, onRestart}: Props) {
+export function Header({ current, max, onRestart }: Props) {
 	return (
 		<div className={styles.container}>
 			<img src={logo} alt="Logo" />
