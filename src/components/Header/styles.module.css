@@ -29,3 +29,14 @@
   height: 2rem;
   transition: scale 0.5s;
 }
+
+.container > header span {
+  font-size: 1.12rem;
+  color: #9b9b9b;
+
+}
+
+.container > header span strong {
+  font-size: 1.37rem;
+  color: #e8891c;
+}
