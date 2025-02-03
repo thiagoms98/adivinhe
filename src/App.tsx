@@ -14,8 +14,14 @@ function App() {
 	const [challenge, setChallenge] = useState<Challenge | null>(null)
 	const [score, setScore] = useState(0)
 
+	const ATTEMPTS_MARGIN = 5
+
 	function handleRestartGame() {
-		alert("Reiniciar o jogo")
+		const isConfirmed = window.confirm('Você tem certeza que deseja reiniciar?')
+		
+		if (isConfirmed) {
+      startGame()
+    }
 	}
 
 	function startGame() {
@@ -42,7 +48,10 @@ function App() {
 			(used) => used.value.toUpperCase() === value
 		)
 
-		if (exists) return alert("Você já tentou a letra" + value)
+		if (exists) {
+			setLetter("")
+			return alert("Você já tentou a letra" + value)
+		}
 
 		const hits = challenge.word
 			.toUpperCase()
@@ -57,9 +66,30 @@ function App() {
 		setLetter("")
 	}
 
+	function endGame(message: string) {
+		alert(message)
+		startGame()
+	}
+
 	useEffect(() => {
 		startGame()
 	}, [])
+
+	useEffect(() => {
+		if (!challenge) return
+
+		setTimeout(() => {
+			if (score === challenge.word.length) {
+				return endGame("Parabéns, voce descobriu a palavra!")
+			}
+
+			const attemptLimit = challenge.word.length + ATTEMPTS_MARGIN
+
+			if (lettersUsed.length === attemptLimit) {
+				return endGame("Você usou todas as tentativas...")
+			}
+		}, 200)
+	}, [score, lettersUsed.length])
 
 	if (!challenge) {
 		return
@@ -68,7 +98,11 @@ function App() {
 	return (
 		<div className={styles.container}>
 			<main>
-				<Header current={score} max={10} onRestart={handleRestartGame} />
+				<Header
+					current={lettersUsed.length}
+					max={challenge.word.length + ATTEMPTS_MARGIN}
+					onRestart={handleRestartGame}
+				/>
 
 				<Tip tip={challenge.tip} />
 
