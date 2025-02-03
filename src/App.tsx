@@ -4,13 +4,14 @@ import { Tip } from "./components/Tip"
 import { Letter } from "./components/Letter"
 import { Input } from "./components/Input"
 import { Button } from "./components/Button"
-import { LettersUsed } from "./components/LettersUsed"
+import { LettersUsed, LettersUsedProps } from "./components/LettersUsed"
 import { Challenge, WORDS } from "./utils/words"
 import { useEffect, useState } from "react"
 
 function App() {
 	const [attempts, setAttempts] = useState(0)
 	const [letter, setLetter] = useState("")
+	const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([])
 	const [challenge, setChallenge] = useState<Challenge | null>(null)
 
 	function handleRestartGame() {
@@ -33,6 +34,10 @@ function App() {
 		startGame()
 	}, [])
 
+	if (!challenge) {
+		return
+	}
+
 	return (
 		<div className={styles.container}>
 			<main>
@@ -41,11 +46,9 @@ function App() {
 				<Tip tip="Uma das linguagens de programação mais utilizadas" />
 
 				<div className={styles.word}>
-					<Letter value="R" />
-					<Letter value="E" />
-					<Letter value="A" />
-					<Letter value="C" />
-					<Letter value="T" />
+					{challenge.word.split("").map(() => (
+						<Letter value="" />
+					))}
 				</div>
 
 				<h4>Palpite</h4>
@@ -55,7 +58,7 @@ function App() {
 					<Button title="Confirmar"></Button>
 				</div>
 
-				<LettersUsed />
+				<LettersUsed data={lettersUsed}/>
 			</main>
 		</div>
 	)
